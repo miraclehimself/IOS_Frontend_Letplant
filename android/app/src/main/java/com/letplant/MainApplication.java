@@ -1,4 +1,4 @@
-package com.letplant;
+package com.letplantapp;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

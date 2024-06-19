@@ -1,4 +1,4 @@
-package com.letplant;
+package com.letplantapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

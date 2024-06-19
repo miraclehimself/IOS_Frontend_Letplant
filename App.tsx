@@ -11,6 +11,7 @@ import StackNav from './src/navigation/Stack';
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
 import Toast from 'react-native-toast-message';
+import { NavigationContainer } from '@react-navigation/native';
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -22,7 +23,9 @@ function App() {
           backgroundColor="#1ABC76"
         />
         <Provider store={store}>
-          <StackNav />
+        <NavigationContainer>
+        <StackNav />
+        </NavigationContainer>
         </Provider>
       </View>
     </>

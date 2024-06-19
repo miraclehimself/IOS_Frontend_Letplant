@@ -9,6 +9,7 @@ import {
   Image,
   StatusBar,
   TouchableWithoutFeedback,
+  SafeAreaView,
 } from 'react-native';
 import calculateResponsiveFontSize from '../../utils/font';
 import {useNavigation} from '@react-navigation/native';
@@ -124,140 +125,142 @@ const ChangePassword = () => {
   const bgColor = colors.brand.bg;
 
   return (
-    <View style={styles.container}>
-      <Stack my="5" justifyContent="flex-end" alignItems="flex-end">
-        <TouchableWithoutFeedback
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image source={require('../../images/XCircle.png')} />
-        </TouchableWithoutFeedback>
-      </Stack>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <Stack my="5" justifyContent="flex-end" alignItems="flex-end">
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Image source={require('../../images/XCircle.png')} />
+          </TouchableWithoutFeedback>
+        </Stack>
 
-      <Stack mt="5" mb="10">
-        <Text
-          style={[
-            {
-              fontSize: rs(18),
-              color: '#000',
-              fontWeight: '500',
-              marginBottom: rs(1),
-            },
-          ]}>
-          Create new password
-        </Text>
-      </Stack>
-      <Stack mb="5">
-        <Text style={styles.inputText}>Old Password</Text>
+        <Stack mt="5" mb="10">
+          <Text
+            style={[
+              {
+                fontSize: rs(18),
+                color: '#000',
+                fontWeight: '500',
+                marginBottom: rs(1),
+              },
+            ]}>
+            Create new password
+          </Text>
+        </Stack>
+        <Stack mb="5">
+          <Text style={styles.inputText}>Old Password</Text>
 
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry={!showPassword?.p3}
-            value={formValues.p}
-            onChangeText={value => handleChange('p', value)}
-          />
-
-          <TouchableOpacity
-            style={styles.eyeIconContainer}
-            onPress={() => togglePasswordVisibility('p3')}>
-            <Image
-              source={
-                showPassword?.p1
-                  ? require('../../images/eye.png')
-                  : require('../../images/eye.png')
-              }
-              style={styles.eyeIcon}
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry={!showPassword?.p3}
+              value={formValues.p}
+              onChangeText={value => handleChange('p', value)}
             />
-          </TouchableOpacity>
-        </View>
-        {formValues?.errors?.p && (
-          <Text style={styles.error}>{formValues?.errors?.p}</Text>
-        )}
-      </Stack>
 
-      <Stack mb="5">
-        <Text style={styles.inputText}>New Password</Text>
+            <TouchableOpacity
+              style={styles.eyeIconContainer}
+              onPress={() => togglePasswordVisibility('p3')}>
+              <Image
+                source={
+                  showPassword?.p1
+                    ? require('../../images/eye.png')
+                    : require('../../images/eye.png')
+                }
+                style={styles.eyeIcon}
+              />
+            </TouchableOpacity>
+          </View>
+          {formValues?.errors?.p && (
+            <Text style={styles.error}>{formValues?.errors?.p}</Text>
+          )}
+        </Stack>
 
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry={!showPassword?.p1}
-            value={formValues.password}
-            onChangeText={value => handleChange('password', value)}
-            onFocus={() => {
-              if (passwordRef.current) {
-                passwordRef.current.focus();
-              }
-            }}
-          />
+        <Stack mb="5">
+          <Text style={styles.inputText}>New Password</Text>
 
-          <TouchableOpacity
-            style={styles.eyeIconContainer}
-            onPress={() => togglePasswordVisibility('p1')}>
-            <Image
-              source={
-                showPassword?.p1
-                  ? require('../../images/eye.png')
-                  : require('../../images/eye.png')
-              }
-              style={styles.eyeIcon}
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry={!showPassword?.p1}
+              value={formValues.password}
+              onChangeText={value => handleChange('password', value)}
+              onFocus={() => {
+                if (passwordRef.current) {
+                  passwordRef.current.focus();
+                }
+              }}
             />
-          </TouchableOpacity>
-        </View>
-        {formValues?.errors?.password && (
-          <Text style={styles.error}>{formValues?.errors?.password}</Text>
-        )}
-      </Stack>
 
-      <Stack mb="5">
-        <Text style={styles.inputText}>Confirm Password</Text>
+            <TouchableOpacity
+              style={styles.eyeIconContainer}
+              onPress={() => togglePasswordVisibility('p1')}>
+              <Image
+                source={
+                  showPassword?.p1
+                    ? require('../../images/eye.png')
+                    : require('../../images/eye.png')
+                }
+                style={styles.eyeIcon}
+              />
+            </TouchableOpacity>
+          </View>
+          {formValues?.errors?.password && (
+            <Text style={styles.error}>{formValues?.errors?.password}</Text>
+          )}
+        </Stack>
 
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            secureTextEntry={!showPassword?.p2}
-            value={formValues.pass}
-            onChangeText={value => handleChange('pass', value)}
-            onFocus={() => {
-              if (confirmPasswordRef.current) {
-                confirmPasswordRef.current.focus();
-              }
-            }}
-          />
+        <Stack mb="5">
+          <Text style={styles.inputText}>Confirm Password</Text>
 
-          <TouchableOpacity
-            style={styles.eyeIconContainer}
-            onPress={() => togglePasswordVisibility('p2')}>
-            <Image
-              source={
-                showPassword?.p2
-                  ? require('../../images/eye.png')
-                  : require('../../images/eye.png')
-              }
-              style={styles.eyeIcon}
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              secureTextEntry={!showPassword?.p2}
+              value={formValues.pass}
+              onChangeText={value => handleChange('pass', value)}
+              onFocus={() => {
+                if (confirmPasswordRef.current) {
+                  confirmPasswordRef.current.focus();
+                }
+              }}
             />
-          </TouchableOpacity>
-        </View>
-        {formValues?.errors?.pass && (
-          <Text style={styles.error}>{formValues?.errors?.pass}</Text>
-        )}
-      </Stack>
-      <Stack flex="1" justifyContent="center" alignItems="center" w="100%">
-        <CustomButton
-          bg={bgColor}
-          color="#fff"
-          w="100"
-          borderColor={bgColor}
-          handlePress={handleSubmit}
-          isLoading={isLoading}
-          text="Send"
-        />
-      </Stack>
-    </View>
+
+            <TouchableOpacity
+              style={styles.eyeIconContainer}
+              onPress={() => togglePasswordVisibility('p2')}>
+              <Image
+                source={
+                  showPassword?.p2
+                    ? require('../../images/eye.png')
+                    : require('../../images/eye.png')
+                }
+                style={styles.eyeIcon}
+              />
+            </TouchableOpacity>
+          </View>
+          {formValues?.errors?.pass && (
+            <Text style={styles.error}>{formValues?.errors?.pass}</Text>
+          )}
+        </Stack>
+        <Stack flex="1" justifyContent="center" alignItems="center" w="100%">
+          <CustomButton
+            bg={bgColor}
+            color="#fff"
+            w="100"
+            borderColor={bgColor}
+            handlePress={handleSubmit}
+            isLoading={isLoading}
+            text="Send"
+          />
+        </Stack>
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,49 +7,50 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   ScrollView,
-} from "react-native";
-import calculateResponsiveFontSize from "../../utils/font";
-import OtpInputs from "react-native-otp-inputs";
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
-import { setPasswordAction } from "../../redux/authenticationSlice";
-import CustomButton from "../../component/CustomButton";
-import { rs } from "react-native-full-responsive";
-import { Stack, useTheme } from "native-base";
+  SafeAreaView,
+} from 'react-native';
+import calculateResponsiveFontSize from '../../utils/font';
+import OtpInputs from 'react-native-otp-inputs';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {setPasswordAction} from '../../redux/authenticationSlice';
+import CustomButton from '../../component/CustomButton';
+import {rs} from 'react-native-full-responsive';
+import {Stack, useTheme} from 'native-base';
 
 const CheckEmail = () => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
-    password: "",
+    password: '',
     errors: {
-      password: "",
+      password: '',
     },
   });
   const otpRef = useRef(null); // Ref for OTP input
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   // Access the color from the theme
   const bgColor = colors.brand.bg;
   const navigation = useNavigation();
 
-  const handleChange = (value) => {
+  const handleChange = value => {
     setFormValues({
       ...formValues,
       password: value,
       errors: {
         ...formValues.errors,
-        password: "", // Clear the error message for this field
+        password: '', // Clear the error message for this field
       },
     });
   };
   const handleSubmit = async () => {
-    const { password } = formValues;
+    const {password} = formValues;
     const errors = {};
 
-    if (password === "") {
-      errors.password = "Password is required";
+    if (password === '') {
+      errors.password = 'Password is required';
     } else if (password.length < 4) {
-      errors.password = "Password length must be 4";
+      errors.password = 'Password length must be 4';
     }
 
     // Update the state with the errors object
@@ -64,7 +65,7 @@ const CheckEmail = () => {
         password: formValues.password,
       };
       dispatch(setPasswordAction(d?.password));
-      navigation.navigate("CreateNewPassword");
+      navigation.navigate('CreateNewPassword');
     }
   };
 
@@ -76,14 +77,14 @@ const CheckEmail = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <Stack my="5" justifyContent="flex-end" alignItems="flex-end">
           <TouchableWithoutFeedback
             onPress={() => {
               navigation.goBack();
-            }}
-          >
-            <Image source={require("../../images/XCircle.png")} />
+            }}>
+            <Image source={require('../../images/XCircle.png')} />
           </TouchableWithoutFeedback>
         </Stack>
 
@@ -92,31 +93,27 @@ const CheckEmail = () => {
             style={[
               {
                 fontSize: rs(16),
-                color: "#000",
-                fontWeight: "500",
+                color: '#000',
+                fontWeight: '500',
                 marginBottom: 1,
               },
-            ]}
-          >
+            ]}>
             Check your Email!
           </Text>
           <Text
             style={[
               {
-                fontSize:rs(16),
-                color: "#000",
-                fontWeight: "500",
+                fontSize: rs(16),
+                color: '#000',
+                fontWeight: '500',
                 marginBottom: 1,
               },
-            ]}
-          >
+            ]}>
             To input your OTP.
           </Text>
         </Stack>
 
-        <View
-          style={{ flex: 0.5, marginRight: rs(10) }}
-        >
+        <View style={{flex: 0.5, marginRight: rs(10)}}>
           <OtpInputs
             handleChange={handleChange}
             numberOfInputs={4}
@@ -142,13 +139,14 @@ const CheckEmail = () => {
           />
         </Stack>
       </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   inputStyles: {
     borderWidth: rs(1),
-    borderBottomColor: "gray",
+    borderBottomColor: 'gray',
     padding: rs(15),
   },
   container: {
@@ -157,7 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   error: {
-    color: "red",
+    color: 'red',
     marginBottom: rs(10),
   },
 });

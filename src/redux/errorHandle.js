@@ -1,4 +1,5 @@
 export function formatError(response) {
+  // console.log(response, "response")
   if (response?.data) {
     const { data, errors, title, message, error } = response;
 

@@ -10,6 +10,7 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import calculateResponsiveFontSize from "../../utils/font";
 import { useNavigation } from "@react-navigation/native";
@@ -123,7 +124,8 @@ const Registration = () => {
   const bgColor = colors.brand.bg;
 
   return (
-    <ScrollView style={styles.container}>
+   <SafeAreaView style={styles.container}>
+     <ScrollView  style={styles.container}>
       <Stack my="5" justifyContent="flex-end" alignItems="flex-end">
         <TouchableWithoutFeedback
           onPress={() => {
@@ -274,6 +276,7 @@ const Registration = () => {
         />
       </Stack>
     </ScrollView>
+   </SafeAreaView>
   );
 };
 

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { formatError } from "./errorHandle";
 import { MMKV } from 'react-native-mmkv'
+import { logout } from "./authenticationSlice";
 
 export const storage = new MMKV()
 const baseQuery = fetchBaseQuery({
@@ -16,10 +17,22 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions);
+  
+  if (result.error && result.error.status === 401) {
+    // Token expired or unauthorized
+    api.dispatch(logout());
+  }
+  
+  return result;
+};
+
 // Define a service using a base URL and expected endpoints
 export const Api = createApi({
   reducerPath: "Api",
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithReauth,
   tagTypes: ["user", "image"],
   endpoints: (builder) => ({
     registerAccount: builder.mutation({

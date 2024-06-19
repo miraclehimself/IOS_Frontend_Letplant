@@ -3,6 +3,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   Linking,
+  SafeAreaView,
 } from 'react-native';
 import React from 'react';
 import {
@@ -77,150 +78,164 @@ function More() {
     navigation.navigate('paymenthistory');
   };
 
-  const handleEmailPress = () => {
-    // Replace 'recipient@example.com' with the email address you want to navigate to
+  const handleEmailPress = async () => {
     const recipientEmail = 'Hi@letplant.com';
-    // Replace 'subject' with your desired email subject
     const subject = 'Hi Leplant';
-    // Replace 'body' with your desired email body
     const body = 'How can we help you?';
 
-    // Construct the email URL
-    const emailUrl = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+    const emailUrl = `mailto:${recipientEmail}?subject=${encodedSubject}&body=${encodedBody}`;
 
-    // Open the default email application
-    Linking.openURL(emailUrl);
+    try {
+      const canOpen = await Linking.canOpenURL(emailUrl);
+      console.log(canOpen)
+      if (canOpen) {
+        await Linking.openURL(emailUrl);
+      } else {
+        console.log('error in open link');
+      }
+    } catch (error) {
+      console.error(
+        'An error occurred while trying to open the email URL:',
+        error,
+      );
+    }
   };
   return (
-    <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
-      <StatusBar bg="#fff" barStyle="dark-content" />
+    <SafeAreaView style={styles.screen}>
+      <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
+        <StatusBar bg="#fff" barStyle="dark-content" />
 
-      <Center>
-        <HStack
-          bg="transparent"
-          px="1"
-          py="3"
-          mt="5"
-          justifyContent="space-between"
-          alignItems="center"
-          w="100%"
-          maxW="350">
-          <HStack space={2}>
-            <Stack w="20" h="20">
-              {data?.data?.avatar ? (
-                <FastImage
-                  style={{width: '100%', height: '100%', borderRadius: 10}}
-                  source={{
-                    uri: `https://letsplant-e2f1ec719b84.herokuapp.com${data?.data?.avatar}`,
-                    // headers: { Authorization: 'someAuthToken' },
-                    priority: FastImage.priority.normal,
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                />
-              ) : (
-                <Image source={require('../../images/Profile.png')} alt="ear" />
-              )}
-            </Stack>
-            <Stack>
-              <Text color="#000" fontSize="lg" fontWeight="bold">
-                Hello!
-              </Text>
-              <Text color="#000" fontSize="md" fontWeight="400">
-                Good Afternoon
-              </Text>
-              {isLoading && <Skeleton.Text />}
+        <Center>
+          <HStack
+            bg="transparent"
+            px="1"
+            py="3"
+            mt="5"
+            justifyContent="space-between"
+            alignItems="center"
+            w="100%"
+            maxW="350">
+            <HStack space={2}>
+              <Stack w="20" h="20">
+                {data?.data?.avatar ? (
+                  <FastImage
+                    style={{width: '100%', height: '100%', borderRadius: 10}}
+                    source={{
+                      uri: `https://letsplant-e2f1ec719b84.herokuapp.com${data?.data?.avatar}`,
+                      // headers: { Authorization: 'someAuthToken' },
+                      priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                  />
+                ) : (
+                  <Image
+                    source={require('../../images/Profile.png')}
+                    alt="ear"
+                  />
+                )}
+              </Stack>
+              <Stack>
+                <Text color="#000" fontSize="lg" fontWeight="bold">
+                  Hello!
+                </Text>
+                <Text color="#000" fontSize="md" fontWeight="400">
+                  Good Afternoon
+                </Text>
+                {isLoading && <Skeleton.Text />}
 
-              {/* {
+                {/* {
             isSuccess &&  <Text   color="#000" fontSize={calculateResponsiveFontSize(5)} fontWeight="400">
            {
             data?.data?.email
            }
             </Text>
           } */}
-              {isSuccess && (
-                <Text color="#000" fontSize="md" fontWeight="400">
-                  {data?.data?.name}
-                </Text>
-              )}
-            </Stack>
+                {isSuccess && (
+                  <Text color="#000" fontSize="md" fontWeight="400">
+                    {data?.data?.name}
+                  </Text>
+                )}
+              </Stack>
+            </HStack>
+            <Stack></Stack>
           </HStack>
-          <Stack></Stack>
-        </HStack>
-      </Center>
-      <Center>
-        <Stack bg="transparent" px="1" py="3" mt="2" w="100%" maxW="350">
-          <Stack>
-            <Text color="#000" fontSize="md" fontWeight="400">
-              Account
-            </Text>
-            <Stack my="2" style={styles.conBorder}>
-              <TouchableWithoutFeedback onPress={goChangeProfile}>
-                <HStack alignItems="center" space="2">
-                  <Image
-                    source={require('../../images/Profile.png')}
-                    alt="ear"
-                  />
-                  <Text color="#000" fontSize="md" fontWeight="400">
-                    My Profile
-                  </Text>
-                </HStack>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={goHistoryScreen}>
-                <HStack mt="3" alignItems="center" space="2">
-                  <Image
-                    source={require('../../images/history-p-icon.png')}
-                    alt="ear"
-                  />
-                  <Text color="#000" fontSize="md" fontWeight="400">
-                    Payment History
-                  </Text>
-                </HStack>
-              </TouchableWithoutFeedback>
+        </Center>
+        <Center>
+          <Stack bg="transparent" px="1" py="3" mt="2" w="100%" maxW="350">
+            <Stack>
+              <Text color="#000" fontSize="md" fontWeight="400">
+                Account
+              </Text>
+              <Stack my="2" style={styles.conBorder}>
+                <TouchableWithoutFeedback onPress={goChangeProfile}>
+                  <HStack alignItems="center" space="2">
+                    <Image
+                      source={require('../../images/Profile.png')}
+                      alt="ear"
+                    />
+                    <Text color="#000" fontSize="md" fontWeight="400">
+                      My Profile
+                    </Text>
+                  </HStack>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={goHistoryScreen}>
+                  <HStack mt="3" alignItems="center" space="2">
+                    <Image
+                      source={require('../../images/history-p-icon.png')}
+                      alt="ear"
+                    />
+                    <Text color="#000" fontSize="md" fontWeight="400">
+                      Payment History
+                    </Text>
+                  </HStack>
+                </TouchableWithoutFeedback>
+              </Stack>
             </Stack>
-          </Stack>
 
-          <Stack my="2">
-            <Text color="#000" fontSize="md" fontWeight="400">
-              Security
-            </Text>
-            <Stack my="2" style={styles.conBorder}>
-              <TouchableWithoutFeedback onPress={goChangePassword}>
-                <HStack alignItems="center" space="2">
-                  <Image
-                    source={require('../../images/ChangePassword.png')}
-                    alt="ear"
-                  />
-                  <Text color="#000" fontSize="md" fontWeight="400">
-                    Change Password
-                  </Text>
-                </HStack>
-              </TouchableWithoutFeedback>
-              {/* <HStack mt="3" alignItems="center" space="2">
+            <Stack my="2">
+              <Text color="#000" fontSize="md" fontWeight="400">
+                Security
+              </Text>
+              <Stack my="2" style={styles.conBorder}>
+                <TouchableWithoutFeedback onPress={goChangePassword}>
+                  <HStack alignItems="center" space="2">
+                    <Image
+                      source={require('../../images/ChangePassword.png')}
+                      alt="ear"
+                    />
+                    <Text color="#000" fontSize="md" fontWeight="400">
+                      Change Password
+                    </Text>
+                  </HStack>
+                </TouchableWithoutFeedback>
+                {/* <HStack mt="3" alignItems="center" space="2">
 <Image source={require('../../images/ResetPassword.png')} alt="ear"  />
 <Text  color="#000" fontSize="md" fontWeight="400">Reset password</Text>
     
 </HStack> */}
+              </Stack>
             </Stack>
-          </Stack>
 
-          <Stack my="2">
-            <Text color="#000" fontSize="md" fontWeight="400">
-              Help
-            </Text>
-            <Stack my="2" style={styles.conBorder}>
-              <TouchableWithoutFeedback onPress={handleEmailPress}>
-                <HStack alignItems="center" space="2">
-                  <Image
-                    source={require('../../images/CustomerService.png')}
-                    alt="ear"
-                  />
-                  <Text color="#000" fontSize="md" fontWeight="400">
-                    Customer Service
-                  </Text>
-                </HStack>
-              </TouchableWithoutFeedback>
+            <Stack my="2">
+              <Text color="#000" fontSize="md" fontWeight="400">
+                Help
+              </Text>
+              <Stack my="2" style={styles.conBorder}>
+                <TouchableWithoutFeedback onPress={handleEmailPress}>
+                  <HStack alignItems="center" space="2">
+                    <Image
+                      source={require('../../images/CustomerService.png')}
+                      alt="ear"
+                    />
+                    <Text color="#000" fontSize="md" fontWeight="400">
+                      Customer Service
+                    </Text>
+                  </HStack>
+                </TouchableWithoutFeedback>
 
-              {/* <TouchableWithoutFeedback onPress={goChatScreen}>
+                {/* <TouchableWithoutFeedback onPress={goChatScreen}>
                 <HStack mt="3" alignItems="center" space="2">
                   <Image
                     source={require('../../images/ChatUs.png')}
@@ -231,53 +246,54 @@ function More() {
                   </Text>
                 </HStack>
               </TouchableWithoutFeedback> */}
+              </Stack>
+            </Stack>
+            <Stack my="2">
+              <Stack
+                my="2"
+                mb={calculateResponsiveFontSize(40)}
+                style={styles.conBorder}>
+                <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+                  <HStack alignItems="center" space="2">
+                    <Image
+                      source={require('../../images/DeleteAccount.png')}
+                      alt="ear"
+                    />
+                    <Text color="#000" fontSize="md" fontWeight="400">
+                      Delete Account
+                    </Text>
+                  </HStack>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  onPress={() => setModalVisibleLogOut(true)}>
+                  <HStack mt="3" alignItems="center" space="2">
+                    <Image
+                      source={require('../../images/LogOut.png')}
+                      alt="ear"
+                    />
+                    <Text color="#000" fontSize="md" fontWeight="400">
+                      Log out
+                    </Text>
+                  </HStack>
+                </TouchableWithoutFeedback>
+              </Stack>
             </Stack>
           </Stack>
-          <Stack my="2">
-            <Stack
-              my="2"
-              mb={calculateResponsiveFontSize(40)}
-              style={styles.conBorder}>
-              <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-                <HStack alignItems="center" space="2">
-                  <Image
-                    source={require('../../images/DeleteAccount.png')}
-                    alt="ear"
-                  />
-                  <Text color="#000" fontSize="md" fontWeight="400">
-                    Delete Account
-                  </Text>
-                </HStack>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => setModalVisibleLogOut(true)}>
-                <HStack mt="3" alignItems="center" space="2">
-                  <Image
-                    source={require('../../images/LogOut.png')}
-                    alt="ear"
-                  />
-                  <Text color="#000" fontSize="md" fontWeight="400">
-                    Log out
-                  </Text>
-                </HStack>
-              </TouchableWithoutFeedback>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Center>
-      <DeleteAccount
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        isLoadingDelete={isLoadingDelete}
-        handleSubmit={handleSubmit}
-      />
+        </Center>
+        <DeleteAccount
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          isLoadingDelete={isLoadingDelete}
+          handleSubmit={handleSubmit}
+        />
 
-      <LogoutAccount
-        modalVisible={modalVisibleLogout}
-        setModalVisible={setModalVisibleLogOut}
-        handleSubmit={logout}
-      />
-    </ScrollView>
+        <LogoutAccount
+          modalVisible={modalVisibleLogout}
+          setModalVisible={setModalVisibleLogOut}
+          handleSubmit={logout}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

@@ -1,4 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { MMKV } from 'react-native-mmkv';
+
+export const storage = new MMKV();
+
 const initialState = {
   token: "",
   isloading: true,
@@ -12,19 +16,21 @@ const initialState = {
 };
 
 const authenticationSlice = createSlice({
-  name: "image",
+  name: "authentication",
   initialState,
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload;
+      storage.set('token', action.payload);
     },
     clearToken: (state) => {
       state.token = "";
+      storage.delete('token');
     },
     setIsloadingTrue: (state) => {
       state.isloading = true;
     },
-    setIsloadingfalse: (state) => {
+    setIsloadingFalse: (state) => {
       state.isloading = false;
     },
     setLocationAction: (state, { payload }) => {
@@ -39,6 +45,13 @@ const authenticationSlice = createSlice({
     setItem: (state, { payload }) => {
       state.item = payload;
     },
+    logout: (state) => {
+      state.token = "";
+      state.password = "";
+      state.email = "";
+      state.item = {};
+      storage.delete('token');
+    },
   },
 });
 
@@ -46,10 +59,11 @@ export const {
   setToken,
   clearToken,
   setIsloadingTrue,
-  setIsloadingfalse,
+  setIsloadingFalse,
   setLocationAction,
   setPasswordAction,
   setEmailAction,
   setItem,
+  logout,
 } = authenticationSlice.actions;
 export default authenticationSlice.reducer;
