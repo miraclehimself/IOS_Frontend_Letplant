@@ -23,7 +23,9 @@ import Toast from 'react-native-toast-message';
 import PaymentScreen from '../page/payment';
 import HistoryScreen from '../page/History';
 import VerifyEmail from '../page/VerifiyAccount';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {storage} from '../redux/api';
+import {setToken} from '../redux/authenticationSlice';
 
 const Stack = createStackNavigator();
 const newColorTheme = {
@@ -35,7 +37,19 @@ const theme = extendTheme({colors: newColorTheme});
 
 function StackNav() {
   const token = useSelector(state => state.auth?.token);
+  // console.log(token, 'token');
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (token) {
+        navigation.navigate('bottom');
+      } else {
+        navigation.navigate('welcome');
+      }
+    }, 1000);
+  }, [dispatch, navigation, token]);
 
   return (
     <NativeBaseProvider theme={theme}>

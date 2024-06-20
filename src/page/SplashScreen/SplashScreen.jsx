@@ -10,15 +10,6 @@ const SplashScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const auth = storage.getString("token");
-    if (auth) {
-      navigation.replace("bottom");
-      dispatch(setToken(auth));
-    } else {
-      navigation.navigate("welcome");
-    }
-  }, [dispatch, navigation]);
 
   return (
     <View style={styles.container}>
