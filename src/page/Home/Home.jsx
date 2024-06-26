@@ -12,7 +12,16 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Box, Center, HStack, Image, Skeleton, Stack, Text} from 'native-base';
+import {
+  Box,
+  Card,
+  Center,
+  HStack,
+  Image,
+  Skeleton,
+  Stack,
+  Text,
+} from 'native-base';
 import calculateResponsiveFontSize from '../../utils/font';
 import {useNavigation} from '@react-navigation/native';
 import {useGetAllProcessPlantQuery, useGetUserQuery} from '../../redux/api';
@@ -245,125 +254,140 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.screen}>
-      <StatusBar
-        barStyle="dark-content"
-      />
+      <StatusBar barStyle="dark-content" />
       <Center>
-        <HStack
-          h="auto"
-          bg="transparent"
-          px="1"
-          py="3"
-          mt="2"
-          justifyContent="space-between"
-          alignItems="center"
-          w="100%">
-          <HStack space={2}>
-            <TouchableWithoutFeedback onPress={goChangeProfile}>
-              <Stack w="20" h="20" borderRadius="20">
-                {data?.data?.user.avatar_url ? (
-                  <FastImage
-                    style={{width: '100%', height: '100%', borderRadius: 10}}
-                    source={{
-                      uri: data?.data?.user.avatar_url,
-                      // headers: { Authorization: 'someAuthToken' },
-                      priority: FastImage.priority.normal,
-                    }}
-                    resizeMode={FastImage.resizeMode.contain}
-                  />
-                ) : (
-                  <Image
-                    source={require('../../images/Profile.png')}
-                    alt="image"
-                    borderRadius="md"
-                  />
+        <Card
+          bg="white"
+          borderRadius="md"
+          shadow={5}
+          py={4}
+          mt={4}
+          width="95%"
+          _light={{borderColor: 'gray.200'}}
+          _dark={{borderColor: 'gray.700'}}
+          borderWidth={1}>
+          <HStack
+            h="auto"
+            bg="transparent"
+            py="3"
+            mt="2"
+            justifyContent="space-between"
+            alignItems="center"
+            w="100%">
+            <HStack space={2}>
+              <TouchableWithoutFeedback onPress={goChangeProfile}>
+                <Stack w="20" h="20" borderRadius="20">
+                  {data?.data?.user.avatar_url ? (
+                    <FastImage
+                      style={{width: '100%', height: '100%', borderRadius: 10}}
+                      source={{
+                        uri: data?.data?.user.avatar_url,
+                        // headers: { Authorization: 'someAuthToken' },
+                        priority: FastImage.priority.normal,
+                      }}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../../images/Profile.png')}
+                      alt="image"
+                      borderRadius="md"
+                    />
+                  )}
+                </Stack>
+              </TouchableWithoutFeedback>
+              <Stack>
+                <Text color="#000" fontSize="lg" fontWeight="bold">
+                  Hello!
+                </Text>
+                <Text color="#000" fontSize="md" fontWeight="400">
+                  {getGreeting()}
+                </Text>
+                {isLoading && <Skeleton.Text />}
+
+                {isSuccess && (
+                  <Text color="#000" fontSize="md" fontWeight="400">
+                    {data?.data?.user?.name}
+                  </Text>
                 )}
               </Stack>
-            </TouchableWithoutFeedback>
-            <Stack>
-              <Text color="#000" fontSize="lg" fontWeight="bold">
-                Hello!
-              </Text>
-              <Text color="#000" fontSize="md" fontWeight="400">
-                {getGreeting()}
-              </Text>
-              {isLoading && <Skeleton.Text />}
-
-              {isSuccess && (
-                <Text color="#000" fontSize="md" fontWeight="400">
-                  {data?.data?.user?.name}
-                </Text>
-              )}
-            </Stack>
-          </HStack>
-
-          <TouchableWithoutFeedback onPress={goHistoryScreen}>
-            <Image
-              source={require('../../images/history-icon.png')}
-              alt="image"
-              borderRadius="md"
-            />
-          </TouchableWithoutFeedback>
-        </HStack>
-        {data?.data?.user?.subscription_status && (
-          <HStack
-            w="100%"
-            px="3"
-            justifyContent="space-between"
-            alignItems="center">
-            <HStack space={1} alignItems="center">
-              <Text style={styles.font}>Subscription:</Text>
-              <Text>{data?.data?.user?.subscription_status}</Text>
             </HStack>
-            {data?.data?.user?.subscription_status === 'FREE' ||
-              ('EXPIRED' && (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('payment');
-                  }}
-                  style={{
-                    backgroundColor: '#1ABC76',
-                    padding: rs(6),
-                    borderRadius: rs(5),
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: rs(16),
-                      color: '#fff',
-                      fontWeight: '400',
-                    }}>
-                    Subscribe
-                  </Text>
-                </TouchableOpacity>
-              ))}
-          </HStack>
-        )}
 
-        {data?.data?.user?.subscription_due_date && (
-          <HStack w="100%" my="2" px="3" space={1} alignItems="center">
-            <Text style={styles.font}>Due Date:</Text>
-            <Text>
-              {format(
-                new Date(data?.data?.user?.subscription_due_date),
-                'EEEE, dd, yyyy',
-              )}
-            </Text>
+            <TouchableWithoutFeedback onPress={goHistoryScreen}>
+              <Image
+                source={require('../../images/history-icon.png')}
+                alt="image"
+                borderRadius="md"
+              />
+            </TouchableWithoutFeedback>
           </HStack>
-        )}
-        {data?.data &&
-          typeof data?.data?.remaining_days == 'number' &&
-          Number(data?.data?.remaining_days) !== 0 && (
-            <HStack w="100%" my="2" px="3" space={1} alignItems="center">
-              <Text style={styles.font}>Remaining Days:</Text>
+          {data?.data?.user?.subscription_status && (
+            <HStack w="100%" justifyContent="space-between" alignItems="center">
+              <HStack space={1} alignItems="center">
+                <Text style={[styles.font, {textTransform: 'uppercase'}]}>
+                  Subscription:
+                </Text>
+                <Text style={{textTransform: 'uppercase'}}>
+                  {data?.data?.user?.subscription_status}
+                </Text>
+              </HStack>
+              {data?.data?.user?.subscription_status === 'FREE' ||
+                ('EXPIRED' && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('payment');
+                    }}
+                    style={{
+                      backgroundColor: '#1ABC76',
+                      padding: rs(6),
+                      borderRadius: rs(5),
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: rs(16),
+                        color: '#fff',
+                        fontWeight: '400',
+                      }}>
+                      Subscribe
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+            </HStack>
+          )}
+
+          {data?.data?.user?.subscription_due_date && (
+            <HStack w="100%" my="2" space={1} alignItems="center">
+              <Text style={[styles.font, {textTransform: 'uppercase'}]}>
+                Due Date:
+              </Text>
               <Text
                 style={{
-                  color:
-                    Number(data?.data?.remaining_days) < 10 ? 'red' : '#000',
+                  textTransform: 'uppercase',
+                  color: '#000',
                 }}>
-                {data?.data?.remaining_days}left
+                {format(
+                  new Date(data?.data?.user?.subscription_due_date),
+                  'EEEE, dd, yyyy',
+                )}
               </Text>
             </HStack>
           )}
+          {data?.data &&
+            typeof data?.data?.remaining_days == 'number' &&
+            Number(data?.data?.remaining_days) !== 0 && (
+              <HStack w="100%" my="2" space={1} alignItems="center">
+                <Text style={styles.font}>Remaining Days:</Text>
+                <Text
+                  style={{
+                    color:
+                      Number(data?.data?.remaining_days) < 10 ? 'red' : '#000',
+                    textTransform: 'uppercase',
+                  }}>
+                  {data?.data?.remaining_days}left
+                </Text>
+              </HStack>
+            )}
+        </Card>
       </Center>
       <Center>
         <Stack h="auto" bg="transparent" px="1" py="3" mt="1" w="100%">
@@ -377,10 +401,7 @@ const Home = () => {
                   justifyContent="space-between"
                   w="90%"
                   alignItems="center">
-                  <Text
-                    color="#fff"
-                    fontSize={rs(25)}
-                    fontWeight="800">
+                  <Text color="#fff" fontSize={rs(25)} fontWeight="800">
                     {weatherForcast?.main?.temp}⁰c
                   </Text>
                   {/* <Image
@@ -392,18 +413,10 @@ const Home = () => {
                     alt="image"
                   /> */}
                 </HStack>
-                <Text
-                  color="#fff"
-                  w="90%"
-                  fontSize={rs(16)}
-                  fontWeight="800">
+                <Text color="#fff" w="90%" fontSize={rs(16)} fontWeight="800">
                   {weatherForcast?.weather[0]?.description}
                 </Text>
-                <Text
-                  color="#fff"
-                  w="90%"
-                  fontSize={rs(12)}
-                  fontWeight="800">
+                <Text color="#fff" w="90%" fontSize={rs(12)} fontWeight="800">
                   {weatherForcast?.name}
                 </Text>
               </View>
@@ -576,12 +589,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    // backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   font: {
     fontSize: rs(16),
     fontWeight: '500',
     color: '#000',
+    textTransform: 'capitalize',
   },
 });
 

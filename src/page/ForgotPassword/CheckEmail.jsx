@@ -10,7 +10,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 import calculateResponsiveFontSize from '../../utils/font';
-import OtpInputs from 'react-native-otp-inputs';
+import OTPTextView from 'react-native-otp-textinput';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {setPasswordAction} from '../../redux/authenticationSlice';
@@ -20,61 +21,38 @@ import {Stack, useTheme} from 'native-base';
 
 const CheckEmail = () => {
   const dispatch = useDispatch();
-  const [formValues, setFormValues] = useState({
-    password: '',
-    errors: {
-      password: '',
-    },
-  });
-  const otpRef = useRef(null); // Ref for OTP input
+  const [otpInput, setOtpInput] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const input = useRef(null);
+
+  const clear = () => input.current?.clear();
+
+  const updateOtpText = () => input.current?.setValue(otpInput);
+
+  const handleCellTextChange = async (text, i) => {
+    if (i === 0) {
+      const clippedText = await Clipboard.getString();
+      if (clippedText.slice(0, 1) === text) {
+        input.current?.setValue(clippedText, true);
+        setOtpError('');
+      }
+    }
+  };
+
   const {colors} = useTheme();
 
   // Access the color from the theme
   const bgColor = colors.brand.bg;
   const navigation = useNavigation();
 
-  const handleChange = value => {
-    setFormValues({
-      ...formValues,
-      password: value,
-      errors: {
-        ...formValues.errors,
-        password: '', // Clear the error message for this field
-      },
-    });
-  };
   const handleSubmit = async () => {
-    const {password} = formValues;
-    const errors = {};
-
-    if (password === '') {
-      errors.password = 'Password is required';
-    } else if (password.length < 4) {
-      errors.password = 'Password length must be 4';
-    }
-
-    // Update the state with the errors object
-    setFormValues({
-      ...formValues,
-      errors,
-    });
-
-    // Check if there are no errors before proceeding with form submission
-    if (Object.keys(errors).length === 0) {
-      const d = {
-        password: formValues.password,
-      };
-      dispatch(setPasswordAction(d?.password));
+    if (otpInput.length === 4) {
+      dispatch(setPasswordAction(otpInput));
       navigation.navigate('CreateNewPassword');
+    } else {
+      setOtpError('Otp must be 4 digits');
     }
   };
-
-  // Function to focus on OTP input when component mounts
-  React.useEffect(() => {
-    if (otpRef.current) {
-      otpRef.current.focus();
-    }
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -114,18 +92,16 @@ const CheckEmail = () => {
         </Stack>
 
         <View style={{flex: 0.5, marginRight: rs(10)}}>
-          <OtpInputs
-            handleChange={handleChange}
-            numberOfInputs={4}
-            inputStyles={styles.inputStyles}
-            focusedBorderColor="#000"
-            selectTextOnFocus={false}
-            keyboardType="phone-pad"
+          <OTPTextView
+            ref={input}
+            containerStyle={styles.textInputContainer}
+            handleTextChange={setOtpInput}
+            handleCellTextChange={handleCellTextChange}
+            inputCount={4}
+            keyboardType="numeric"
           />
         </View>
-        {formValues?.errors?.password && (
-          <Text style={styles.error}>{formValues?.errors?.password}</Text>
-        )}
+        {otpError && <Text style={styles.error}>{otpError}</Text>}
 
         <Stack flex="1" justifyContent="center" alignItems="center" w="100%">
           <CustomButton

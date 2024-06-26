@@ -18,6 +18,7 @@ import {useChangePasswordMutation} from '../../redux/api';
 import Toast from 'react-native-toast-message';
 import CustomButton from '../../component/CustomButton';
 import {rs} from 'react-native-full-responsive';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState({
@@ -199,13 +200,9 @@ const ChangePassword = () => {
             <TouchableOpacity
               style={styles.eyeIconContainer}
               onPress={() => togglePasswordVisibility('p1')}>
-              <Image
-                source={
-                  showPassword?.p1
-                    ? require('../../images/eye.png')
-                    : require('../../images/eye.png')
-                }
-                style={styles.eyeIcon}
+              <MaterialCommunityIcons
+                size={20}
+                name={showPassword ? 'eye' : 'eye-off'}
               />
             </TouchableOpacity>
           </View>

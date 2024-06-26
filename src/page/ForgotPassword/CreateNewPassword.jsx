@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message';
 import {rs} from 'react-native-full-responsive';
 import CustomButton from '../../component/CustomButton';
 import {Stack, useTheme} from 'native-base';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CreateNewPassword = () => {
   const [showPassword, setShowPassword] = useState({
@@ -206,14 +207,10 @@ const CreateNewPassword = () => {
             <TouchableOpacity
               style={styles.eyeIconContainer}
               onPress={() => togglePasswordVisibility('p2')}>
-              <Image
-                source={
-                  showPassword?.p2
-                    ? require('../../images/eye.png')
-                    : require('../../images/eye.png')
-                }
-                style={styles.eyeIcon}
-              />
+              <MaterialCommunityIcons
+              size={20}
+              name={showPassword ? 'eye' : 'eye-off'}
+            />
             </TouchableOpacity>
           </View>
           {formValues?.errors?.pass && (

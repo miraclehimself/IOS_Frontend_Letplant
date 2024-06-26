@@ -19,6 +19,7 @@ import {  useRegisterAccountMutation } from "../../redux/api";
 import { useDispatch } from "react-redux";
 import CustomButton from "../../component/CustomButton";
 import { rs } from "react-native-full-responsive";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -250,13 +251,9 @@ const Registration = () => {
             style={styles.eyeIconContainer}
             onPress={togglePasswordVisibility}
           >
-            <Image
-              source={
-                showPassword
-                  ? require("../../images/eye.png")
-                  : require("../../images/eye.png")
-              }
-              style={styles.eyeIcon}
+          <MaterialCommunityIcons
+              size={20}
+              name={showPassword ? 'eye' : 'eye-off'}
             />
           </TouchableOpacity>
         </View>

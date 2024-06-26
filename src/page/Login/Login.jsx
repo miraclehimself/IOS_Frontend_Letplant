@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { HStack, Stack, useTheme } from "native-base";
+import React, {useState, useRef, useEffect} from 'react';
+import {HStack, Icon, Stack, useTheme} from 'native-base';
 import {
   View,
   Text,
@@ -10,28 +10,28 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   ScrollView,
-} from "react-native";
-import calculateResponsiveFontSize from "../../utils/font";
-import { useNavigation } from "@react-navigation/native";
-import { storage, useLoginAccountMutation } from "../../redux/api";
-import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
-import { setToken } from "../../redux/authenticationSlice";
-import CustomButton from "../../component/CustomButton";
-import { rs } from "react-native-full-responsive";
+} from 'react-native';
+import calculateResponsiveFontSize from '../../utils/font';
+import {useNavigation} from '@react-navigation/native';
+import {storage, useLoginAccountMutation} from '../../redux/api';
+import Toast from 'react-native-toast-message';
+import {useDispatch} from 'react-redux';
+import {setToken} from '../../redux/authenticationSlice';
+import CustomButton from '../../component/CustomButton';
+import {rs} from 'react-native-full-responsive';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Login = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
-  const [loginAccount, { isLoading, isError, error }] =
-    useLoginAccountMutation();
+  const [loginAccount, {isLoading, isError, error}] = useLoginAccountMutation();
   const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     errors: {
-      name: "",
-      email: "",
-      password: "",
+      name: '',
+      email: '',
+      password: '',
     },
   });
   const dispatch = useDispatch();
@@ -53,21 +53,21 @@ const Login = () => {
       [field]: value,
       errors: {
         ...formValues.errors,
-        [field]: "", // Clear the error message for this field
+        [field]: '', // Clear the error message for this field
       },
     });
   };
   const handleSubmit = async () => {
-    const { name, email, password } = formValues;
+    const {name, email, password} = formValues;
     const errors = {};
-    if (email === "") {
-      errors.email = "Email is required";
+    if (email === '') {
+      errors.email = 'Email is required';
     } else if (!isValidEmail(email)) {
-      errors.email = "Invalid email format";
+      errors.email = 'Invalid email format';
     }
 
-    if (password === "") {
-      errors.password = "Password is required";
+    if (password === '') {
+      errors.password = 'Password is required';
     }
 
     // Update the state with the errors object
@@ -86,27 +86,27 @@ const Login = () => {
       try {
         const data = await loginAccount(d).unwrap();
         // Handle the response data accordingly (e.g., redirect to the home stack)
-        const { token } = data;
+        const {token} = data;
         // console.log(token , "token")
         if (token) {
-          storage.set("token", token);
+          storage.set('token', token);
           dispatch(setToken(token));
-          navigation.replace("bottom");
+          navigation.replace('bottom');
         }
       } catch (error) {
         if (error) {
           // console.log(error, "errororo")
           if (
             error?.message.includes(
-              "You are yet to verify your email, Another mail has been sent to your email address.",
+              'You are yet to verify your email, Another mail has been sent to your email address.',
             )
           ) {
-            navigation.navigate("verifyemail", { email: formValues.email });
+            navigation.navigate('verifyemail', {email: formValues.email});
           } else {
             Toast.show({
-              type: "error",
-              text1: "",
-              text2: error?.error ?? "",
+              type: 'error',
+              text1: '',
+              text2: error?.error ?? '',
             });
           }
         }
@@ -114,14 +114,14 @@ const Login = () => {
     }
   };
 
-  const isValidEmail = (email) => {
+  const isValidEmail = email => {
     const emailPattern = /\S+@\S+\.\S+/;
     return emailPattern.test(email);
   };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   // Access the color from the theme
   const bgColor = colors.brand.bg;
@@ -135,34 +135,23 @@ const Login = () => {
           style={[
             {
               fontSize: rs(23),
-              color: "#000",
-              fontWeight: "500",
+              color: '#000',
+              fontWeight: '500',
               marginBottom: 1,
             },
-          ]}
-        >
+          ]}>
           Welcome back!
         </Text>
         <HStack mt="1" space={1}>
-          <Text
-            style={[
-              styles.textSignup,
-              { fontSize:rs(16) },
-            ]}
-          >
+          <Text style={[styles.textSignup, {fontSize: rs(16)}]}>
             Don’t have an account?
           </Text>
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate("Registration");
-            }}
-          >
+              navigation.navigate('Registration');
+            }}>
             <Text
-              style={[
-                styles.textSignup,
-                { fontSize: rs(16), color: bgColor },
-              ]}
-            >
+              style={[styles.textSignup, {fontSize: rs(16), color: bgColor}]}>
               Create one
             </Text>
           </TouchableWithoutFeedback>
@@ -173,12 +162,11 @@ const Login = () => {
           style={[
             {
               fontSize: rs(10),
-              color: "red",
-              textAlign: "center",
+              color: 'red',
+              textAlign: 'center',
             },
-          ]}
-        >
-          {error?.message ? error?.message : "something went wrong"}
+          ]}>
+          {error?.message ? error?.message : 'something went wrong'}
         </Text>
       )}
       <Stack mb="5" mt="5">
@@ -188,7 +176,7 @@ const Login = () => {
           style={styles.input}
           placeholder="Email"
           value={formValues.name}
-          onChangeText={(value) => handleChange("email", value)}
+          onChangeText={value => handleChange('email', value)}
           onFocus={() => {
             // Set focus on email input
             if (emailInputRef.current) {
@@ -211,7 +199,7 @@ const Login = () => {
             placeholder="Password"
             secureTextEntry={!showPassword}
             value={formValues.password}
-            onChangeText={(value) => handleChange("password", value)}
+            onChangeText={value => handleChange('password', value)}
             autoCapitalize="none"
             onFocus={() => {
               // Set focus on password input
@@ -223,15 +211,10 @@ const Login = () => {
 
           <TouchableOpacity
             style={styles.eyeIconContainer}
-            onPress={togglePasswordVisibility}
-          >
-            <Image
-              source={
-                showPassword
-                  ? require("../../images/eye.png")
-                  : require("../../images/eye.png")
-              }
-              style={styles.eyeIcon}
+            onPress={togglePasswordVisibility}>
+            <MaterialCommunityIcons
+              size={20}
+              name={showPassword ? 'eye' : 'eye-off'}
             />
           </TouchableOpacity>
         </View>
@@ -254,21 +237,19 @@ const Login = () => {
       <Stack mt="10" w="100%" justifyContent="center" alignItems="center">
         <TouchableWithoutFeedback
           onPress={() => {
-            navigation.navigate("ResetPassword");
+            navigation.navigate('ResetPassword');
           }}
           style={{
-            width: "50%",
-          }}
-        >
+            width: '50%',
+          }}>
           <Text
             style={[
               {
                 fontSize: rs(16),
-                color: "#000",
-                fontWeight: "500",
+                color: '#000',
+                fontWeight: '500',
               },
-            ]}
-          >
+            ]}>
             Reset password
           </Text>
         </TouchableWithoutFeedback>
@@ -280,25 +261,25 @@ const Login = () => {
 const styles = StyleSheet.create({
   inputText: {
     fontSize: rs(18),
-    fontWeight: "400",
-    color: "#000",
+    fontWeight: '400',
+    color: '#000',
     paddingLeft: rs(4),
     paddingBottom: rs(5),
   },
   textContent: {
-    fontWeight: "500",
+    fontWeight: '500',
     // lineHeight:18,
-    color: "#444444",
+    color: '#444444',
     marginBottom: rs(40),
   },
 
   textSignup: {
-    fontWeight: "500",
+    fontWeight: '500',
     // lineHeight:18,
-    color: "#444444",
+    color: '#444444',
   },
   head: {
-    fontWeight: "600",
+    fontWeight: '600',
     lineHeight: rs(20),
   },
 
@@ -309,26 +290,26 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: rs(24),
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: 'bold',
+    color: '#fff',
     marginBottom: rs(20),
   },
   input: {
     height: rs(55),
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderRadius: rs(5),
     paddingHorizontal: rs(10),
     borderWidth: rs(1),
-    borderColor: "#000",
-    width: "100%",
-    color: "#000",
+    borderColor: '#000',
+    width: '100%',
+    color: '#000',
   },
   passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   eyeIconContainer: {
-    position: "absolute",
+    position: 'absolute',
     right: rs(10),
   },
   eyeIcon: {
@@ -336,34 +317,34 @@ const styles = StyleSheet.create({
     height: rs(24),
   },
   loginButton: {
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     borderRadius: rs(5),
     paddingVertical: rs(12),
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: rs(20),
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: rs(16),
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   error: {
-    color: "red",
+    color: 'red',
   },
   forgot: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
     marginTop: rs(1),
     marginBottom: rs(10),
   },
   forgotText: {
-    color: "#920000",
-    fontWeight: "500",
+    color: '#920000',
+    fontWeight: '500',
     lineHeight: rs(20),
     fontSize: rs(16),
   },
   signupText: {
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 
