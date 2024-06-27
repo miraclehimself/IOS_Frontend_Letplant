@@ -87,21 +87,19 @@ function More() {
     const encodedBody = encodeURIComponent(body);
     const emailUrl = `mailto:${recipientEmail}?subject=${encodedSubject}&body=${encodedBody}`;
 
-    try {
-      const canOpen = await Linking.canOpenURL(emailUrl);
-      console.log(canOpen)
-      if (canOpen) {
-        await Linking.openURL(emailUrl);
+    Linking.canOpenURL(
+      `mailto:${recipientEmail}?subject=${subject}&body=${body}`,
+    ).then(supported => {
+      if (supported) {
+        Linking.openURL(
+          `mailto:${recipientEmail}?subject=${subject}&body=${body}`,
+        );
       } else {
-        console.log('error in open link');
+        console.log('Link not supported');
       }
-    } catch (error) {
-      console.error(
-        'An error occurred while trying to open the email URL:',
-        error,
-      );
-    }
+    });
   };
+
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>

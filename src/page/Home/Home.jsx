@@ -276,16 +276,23 @@ const Home = () => {
             w="100%">
             <HStack space={2}>
               <TouchableWithoutFeedback onPress={goChangeProfile}>
-                <Stack w="20" h="20" borderRadius="20">
+                <Stack
+                  w={calculateResponsiveFontSize(25)}
+                  h={calculateResponsiveFontSize(25)}
+                  borderRadius="20">
                   {data?.data?.user.avatar_url ? (
                     <FastImage
-                      style={{width: '100%', height: '100%', borderRadius: 10}}
+                      style={{
+                        width: calculateResponsiveFontSize(25),
+                        height: calculateResponsiveFontSize(25),
+                        borderRadius: calculateResponsiveFontSize(30),
+                      }}
                       source={{
                         uri: data?.data?.user.avatar_url,
                         // headers: { Authorization: 'someAuthToken' },
                         priority: FastImage.priority.normal,
                       }}
-                      resizeMode={FastImage.resizeMode.contain}
+                      resizeMode={FastImage.resizeMode.cover}
                     />
                   ) : (
                     <Image

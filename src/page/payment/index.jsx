@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import calculateResponsiveFontSize from "../../utils/font";
@@ -80,7 +81,7 @@ const PaymentScreen = () => {
     );
   }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
         <HStack space={calculateResponsiveFontSize(1)} alignItems="center">
           <TouchableWithoutFeedback
@@ -152,12 +153,12 @@ const PaymentScreen = () => {
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={[styles.buttonText, { color: "#fff" }]}>
-              7.99GB/Month Premium
+              3.47USD/Month Premium
             </Text>
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
