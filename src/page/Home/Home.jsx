@@ -256,12 +256,12 @@ const Home = () => {
     <SafeAreaView style={styles.screen}>
       <StatusBar barStyle="dark-content" />
       <Center>
-        <Card
+        <Box
           bg="white"
           borderRadius="md"
-          shadow={5}
-          py={4}
+          p={4}
           mt={4}
+          style={styles.shadow}
           width="95%"
           _light={{borderColor: 'gray.200'}}
           _dark={{borderColor: 'gray.700'}}
@@ -394,7 +394,7 @@ const Home = () => {
                 </Text>
               </HStack>
             )}
-        </Card>
+        </Box>
       </Center>
       <Center>
         <Stack h="auto" bg="transparent" px="1" py="3" mt="1" w="100%">
@@ -602,6 +602,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#000',
     textTransform: 'capitalize',
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
 });
 
