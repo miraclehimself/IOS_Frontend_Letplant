@@ -95,7 +95,7 @@ const AnalyzeResult = (props) => {
       <Stack px="4">
         <HStack justifyContent="space-between" alignItems="center" mt="3">
           <Text
-              fontSize={rs(16)}
+            fontSize={rs(16)}
             color="#000"
             fontWeight="500"
           >
@@ -103,7 +103,7 @@ const AnalyzeResult = (props) => {
             Property{" "}
           </Text>
           <Text
-             fontSize={rs(16)}
+            fontSize={rs(16)}
             color="#000"
             fontWeight="500"
           >
@@ -121,7 +121,7 @@ const AnalyzeResult = (props) => {
             <View style={styles.blackDot} />
 
             <Text
-               fontSize={rs(16)}
+              fontSize={rs(16)}
               color="#000"
               fontWeight="400"
             >
@@ -146,7 +146,7 @@ const AnalyzeResult = (props) => {
           <HStack alignItems="center" space={2}>
             <View style={styles.blackDot} />
             <Text
-            fontSize={rs(16)}
+              fontSize={rs(16)}
               color="#000"
               fontWeight="400"
             >
@@ -171,7 +171,7 @@ const AnalyzeResult = (props) => {
           <HStack alignItems="center" space={2}>
             <View style={styles.blackDot} />
             <Text
-               fontSize={rs(16)}
+              fontSize={rs(16)}
               color="#000"
               fontWeight="400"
             >
@@ -204,7 +204,7 @@ const AnalyzeResult = (props) => {
             </Text>
           </HStack>
           <Text
-             fontSize={rs(16)}
+            fontSize={rs(16)}
             color="#000"
             fontWeight="400"
           >
@@ -229,7 +229,7 @@ const AnalyzeResult = (props) => {
             </Text>
           </HStack>
           <Text
-             fontSize={rs(16)}
+            fontSize={rs(16)}
             color="#000"
             fontWeight="400"
           >
