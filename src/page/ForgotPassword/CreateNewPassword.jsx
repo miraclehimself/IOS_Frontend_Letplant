@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,13 +12,13 @@ import {
   SafeAreaView,
 } from 'react-native';
 import calculateResponsiveFontSize from '../../utils/font';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {useResetPasswordFinalizedMutation} from '../../redux/api';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { useResetPasswordFinalizedMutation } from '../../redux/api';
 import Toast from 'react-native-toast-message';
-import {rs} from 'react-native-full-responsive';
+import { rs } from 'react-native-full-responsive';
 import CustomButton from '../../component/CustomButton';
-import {Stack, useTheme} from 'native-base';
+import { Stack, useTheme } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CreateNewPassword = () => {
@@ -36,7 +36,7 @@ const CreateNewPassword = () => {
   });
   const state = useSelector(state => state.auth);
   // console.log(state, "state")
-  const [resetPasswordFinalized, {isLoading, isError, error}] =
+  const [resetPasswordFinalized, { isLoading, isError, error }] =
     useResetPasswordFinalizedMutation();
 
   const passwordRef = useRef(null);
@@ -59,7 +59,7 @@ const CreateNewPassword = () => {
   };
   const navigation = useNavigation();
   const handleSubmit = async () => {
-    const {password, pass} = formValues;
+    const { password, pass } = formValues;
     const errors = {};
 
     if (password === '') {
@@ -118,7 +118,7 @@ const CreateNewPassword = () => {
       [key]: !prevShowPassword[key],
     }));
   };
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   // Access the color from the theme
   const bgColor = colors.brand.bg;
@@ -170,15 +170,12 @@ const CreateNewPassword = () => {
             <TouchableOpacity
               style={styles.eyeIconContainer}
               onPress={() => togglePasswordVisibility('p1')}>
-              <Image
-                source={
-                  showPassword?.p1
-                    ? require('../../images/eye.png')
-                    : require('../../images/eye.png')
-                }
-                style={styles.eyeIcon}
+              <MaterialCommunityIcons
+                size={20}
+                name={showPassword.p1 ? 'eye' : 'eye-off'}
               />
             </TouchableOpacity>
+
           </View>
           {formValues?.errors?.password && (
             <Text style={styles.error}>{formValues?.errors?.password}</Text>
@@ -208,9 +205,9 @@ const CreateNewPassword = () => {
               style={styles.eyeIconContainer}
               onPress={() => togglePasswordVisibility('p2')}>
               <MaterialCommunityIcons
-              size={20}
-              name={showPassword ? 'eye' : 'eye-off'}
-            />
+                size={20}
+                name={showPassword.p2 ? 'eye' : 'eye-off'}
+              />
             </TouchableOpacity>
           </View>
           {formValues?.errors?.pass && (

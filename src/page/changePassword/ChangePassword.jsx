@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Stack, useTheme} from 'native-base';
+import React, { useEffect, useRef, useState } from 'react';
+import { Stack, useTheme } from 'native-base';
 import {
   View,
   Text,
@@ -12,12 +12,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import calculateResponsiveFontSize from '../../utils/font';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {useChangePasswordMutation} from '../../redux/api';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { useChangePasswordMutation } from '../../redux/api';
 import Toast from 'react-native-toast-message';
 import CustomButton from '../../component/CustomButton';
-import {rs} from 'react-native-full-responsive';
+import { rs } from 'react-native-full-responsive';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ChangePassword = () => {
@@ -40,7 +40,7 @@ const ChangePassword = () => {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   // console.log(state, "state")
-  const [changePassword, {isLoading}] = useChangePasswordMutation();
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
 
   const handleChange = (field, value) => {
     setFormValues({
@@ -60,7 +60,7 @@ const ChangePassword = () => {
 
   const navigation = useNavigation();
   const handleSubmit = async () => {
-    const {password, pass, p} = formValues;
+    const { password, pass, p } = formValues;
     const errors = {};
     if (p === '') {
       errors.p = 'Old password is required';
@@ -120,7 +120,7 @@ const ChangePassword = () => {
       [key]: !prevShowPassword[key],
     }));
   };
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   // Access the color from the theme
   const bgColor = colors.brand.bg;
@@ -202,7 +202,7 @@ const ChangePassword = () => {
               onPress={() => togglePasswordVisibility('p1')}>
               <MaterialCommunityIcons
                 size={20}
-                name={showPassword ? 'eye' : 'eye-off'}
+                name={showPassword.p1 ? 'eye' : 'eye-off'}
               />
             </TouchableOpacity>
           </View>
@@ -227,19 +227,15 @@ const ChangePassword = () => {
                 }
               }}
             />
-
             <TouchableOpacity
               style={styles.eyeIconContainer}
               onPress={() => togglePasswordVisibility('p2')}>
-              <Image
-                source={
-                  showPassword?.p2
-                    ? require('../../images/eye.png')
-                    : require('../../images/eye.png')
-                }
-                style={styles.eyeIcon}
+              <MaterialCommunityIcons
+                size={20}
+                name={showPassword.p2 ? 'eye' : 'eye-off'}
               />
             </TouchableOpacity>
+
           </View>
           {formValues?.errors?.pass && (
             <Text style={styles.error}>{formValues?.errors?.pass}</Text>

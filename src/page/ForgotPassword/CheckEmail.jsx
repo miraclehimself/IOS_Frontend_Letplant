@@ -8,6 +8,8 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import calculateResponsiveFontSize from '../../utils/font';
 import OTPTextView from 'react-native-otp-textinput';
@@ -18,7 +20,6 @@ import {setPasswordAction} from '../../redux/authenticationSlice';
 import CustomButton from '../../component/CustomButton';
 import {rs} from 'react-native-full-responsive';
 import {Stack, useTheme} from 'native-base';
-
 const CheckEmail = () => {
   const dispatch = useDispatch();
   const [otpInput, setOtpInput] = useState('');
@@ -55,8 +56,9 @@ const CheckEmail = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.box}>
+     <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}  style={styles.box}>
+     <View style={styles.container}>
         <Stack my="5" justifyContent="flex-end" alignItems="flex-end">
           <TouchableWithoutFeedback
             onPress={() => {
@@ -115,6 +117,7 @@ const CheckEmail = () => {
           />
         </Stack>
       </View>
+     </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -125,6 +128,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'gray',
     padding: rs(15),
   },
+  box:{ flex:1},
   container: {
     paddingHorizontal: rs(25),
     paddingTop: StatusBar.currentHeight,

@@ -153,7 +153,7 @@ const PaymentScreen = () => {
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={[styles.buttonText, { color: "#fff" }]}>
-              34.99GDP/Month Premium
+              4.99GDP/Month Premium
             </Text>
           )}
         </TouchableOpacity>

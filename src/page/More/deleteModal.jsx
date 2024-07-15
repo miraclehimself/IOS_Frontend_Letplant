@@ -24,9 +24,15 @@ function DeleteAccount({
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
       >
-        <Modal.Content>
+
+        <Modal.Content style={{
+          width: '90%'
+        }}>
           <Modal.CloseButton />
-          <Modal.Header>Are you sure want to delete this account?</Modal.Header>
+
+          <Modal.Header style={{
+            marginTop: calculateResponsiveFontSize(10)
+          }}>Are you sure want to delete this account?</Modal.Header>
 
           <Modal.Footer>
             <Button.Group space={2}>

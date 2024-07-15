@@ -7,6 +7,8 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import calculateResponsiveFontSize from "../../utils/font";
 import OtpInputs from "react-native-otp-inputs";
@@ -65,66 +67,70 @@ const VerifyEmail = (props) => {
 
   return (
     <View style={styles.container}>
-      <Stack my="5" justifyContent="flex-end" alignItems="flex-end">
-        <TouchableWithoutFeedback
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Image source={require("../../images/XCircle.png")} />
-        </TouchableWithoutFeedback>
-      </Stack>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.box}>
 
-      <Stack mt="5" mb="10">
-        <Text
-          style={[
-            {
-              fontSize: calculateResponsiveFontSize(10),
-              color: "#000",
-              fontWeight: "500",
-              marginBottom: 1,
-            },
-          ]}
-        >
-          Check your Email!
-        </Text>
-        <Text
-          style={[
-            {
-              fontSize: calculateResponsiveFontSize(10),
-              color: "#000",
-              fontWeight: "500",
-              marginBottom: 1,
-            },
-          ]}
-        >
-          To input your OTP.
-        </Text>
-      </Stack>
+        <Stack my="5" justifyContent="flex-end" alignItems="flex-end">
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Image source={require("../../images/XCircle.png")} />
+          </TouchableWithoutFeedback>
+        </Stack>
 
-      <View style={{ flex: 0.5, marginRight: calculateResponsiveFontSize(10) }}>
-        <OtpInputs
-          handleChange={handleChange}
-          numberOfInputs={4}
-          inputStyles={styles.inputStyles}
-          focusedBorderColor="#000"
-          selectTextOnFocus={false}
-          keyboardType="phone-pad"
-        />
-      </View>
-      {formError && <Text style={styles.error}>{formError}</Text>}
+        <Stack mt="5" mb="10">
+          <Text
+            style={[
+              {
+                fontSize: calculateResponsiveFontSize(10),
+                color: "#000",
+                fontWeight: "500",
+                marginBottom: 1,
+              },
+            ]}
+          >
+            Check your Email!
+          </Text>
+          <Text
+            style={[
+              {
+                fontSize: calculateResponsiveFontSize(10),
+                color: "#000",
+                fontWeight: "500",
+                marginBottom: 1,
+              },
+            ]}
+          >
+            To input your OTP.
+          </Text>
+        </Stack>
 
-      <Stack flex="1" justifyContent="center" alignItems="center" w="100%">
-        <CustomButton
-          bg={bgColor}
-          color="#fff"
-          w="100"
-          borderColor={bgColor}
-          handlePress={handleSubmit}
-          isLoading={isLoading}
-          text="Verify Email"
-        />
-      </Stack>
+        <View style={{ flex: 0.5, marginRight: calculateResponsiveFontSize(10) }}>
+          <OtpInputs
+            handleChange={handleChange}
+            numberOfInputs={4}
+            inputStyles={styles.inputStyles}
+            focusedBorderColor="#000"
+            selectTextOnFocus={false}
+            keyboardType="phone-pad"
+          />
+        </View>
+        {formError && <Text style={styles.error}>{formError}</Text>}
+
+        <Stack flex="1" justifyContent="center" alignItems="center" w="100%">
+          <CustomButton
+            bg={bgColor}
+            color="#fff"
+            w="100"
+            borderColor={bgColor}
+            handlePress={handleSubmit}
+            isLoading={isLoading}
+            text="Verify Email"
+          />
+        </Stack>
+      </KeyboardAvoidingView>
+
     </View>
   );
 };
@@ -144,6 +150,7 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: rs(10),
   },
+  box: { flex: 1 },
 });
 
 export default VerifyEmail;

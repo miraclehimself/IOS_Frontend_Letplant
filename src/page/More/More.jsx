@@ -116,24 +116,32 @@ function More() {
             w="100%"
             maxW="350">
             <HStack space={2}>
-              <Stack w="20" h="20">
-                {data?.data?.avatar ? (
-                  <FastImage
-                    style={{width: '100%', height: '100%', borderRadius: 10}}
-                    source={{
-                      uri: `https://letsplant-e2f1ec719b84.herokuapp.com${data?.data?.avatar}`,
-                      // headers: { Authorization: 'someAuthToken' },
-                      priority: FastImage.priority.normal,
-                    }}
-                    resizeMode={FastImage.resizeMode.contain}
-                  />
-                ) : (
-                  <Image
-                    source={require('../../images/Profile.png')}
-                    alt="ear"
-                  />
-                )}
-              </Stack>
+            <Stack
+                  w={calculateResponsiveFontSize(25)}
+                  h={calculateResponsiveFontSize(25)}
+                  borderRadius="20">
+                  {data?.data?.user.avatar_url ? (
+                    <FastImage
+                      style={{
+                        width: calculateResponsiveFontSize(25),
+                        height: calculateResponsiveFontSize(25),
+                        borderRadius: calculateResponsiveFontSize(30),
+                      }}
+                      source={{
+                        uri: data?.data?.user.avatar_url,
+                        // headers: { Authorization: 'someAuthToken' },
+                        priority: FastImage.priority.normal,
+                      }}
+                      resizeMode={FastImage.resizeMode.cover}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../../images/Profile.png')}
+                      alt="image"
+                      borderRadius="md"
+                    />
+                  )}
+                </Stack>
               <Stack>
                 <Text color="#000" fontSize="lg" fontWeight="bold">
                   Hello!
